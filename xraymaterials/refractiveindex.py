@@ -55,7 +55,7 @@ def calculate_atomic_masses(formula):
 def calculate_element(elem_name, energy_keV=None):
 
     elem = elements.ELEMENTS[elem_name]
-    return calculate_compound(elem_name, elem.density)
+    return calculate_compound(elem_name, elem.density, energy_keV)
 
 
 def calculate_compound(formula, density_g_cc, energy_keV=None):
@@ -68,6 +68,9 @@ def calculate_compound(formula, density_g_cc, energy_keV=None):
     
     beta = None
     delta = None
+
+    if energy_keV is not None:
+        energy_keV = np.asarray(energy_keV)
     
     for (elem_name, elem_count) in zip(symbols, numbers):
         df = loadcsv.load_element(elem_name)
