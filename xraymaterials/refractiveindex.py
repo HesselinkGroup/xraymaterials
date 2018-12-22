@@ -26,13 +26,25 @@ def calculate_refractive_index(energy_keV, number_density_cc, f1, f2):
     delta = (_electron_radius_cm/(2*np.pi)) * lambda_cm**2 * number_density_cc * f1
     return beta, delta
 
-def calculate_atomic_masses(formula):
+def calculate_stoichiometry(formula):
+    """
+    Calculate the atomic composition of a molecule.
+
+    Parameters:
+        formula: chemical formula, capitalization-sensitive, e.g. "H2O"
+
+    Returns:
+        element_symbols:   list of chemical symbols e.g. ["H", "O"]
+        element_count:     list of numbers of atoms of each element, e.g. [2, 1]
+        element_mass:      list of atomic masses of each element, e.g. [1.00794, 15.9994]
+    """
     element_pattern = re.compile(r"([A-Z][a-z]?)([0-9]*)")
     tokens = element_pattern.findall(formula)
     
     element_symbols = []
     element_mass_total = []
     element_count = []
+    element_mass = []
     
     for (elem_name, elem_number) in tokens:
         
@@ -49,8 +61,10 @@ def calculate_atomic_masses(formula):
         element_count.append(elem_number)
         
         element_mass_total.append(elem_record.mass * elem_number)
+        element_mass.append(elem_record.mass)
     
-    return element_symbols, element_mass_total, element_count
+    return element_symbols, element_count, element_mass
+
 
 def calculate_element(elem_name, energy_keV=None):
 
@@ -60,9 +74,10 @@ def calculate_element(elem_name, energy_keV=None):
 
 def calculate_compound(formula, density_g_cc, energy_keV=None):
     
-    symbols, mol_weights, numbers = calculate_atomic_masses(formula)
-    atomic_mass_g = np.asarray(mol_weights) * scipy.constants.atomic_mass / scipy.constants.gram
-    total_mass_g = atomic_mass_g.sum()
+    symbols, numbers, atomic_masses = calculate_stoichiometry(formula)
+
+    element_mass_g = np.multiply(numbers, atomic_masses) * scipy.constants.atomic_mass / scipy.constants.gram
+    total_mass_g = element_mass_g.sum()
     total_number = np.asarray(numbers).sum()
     total_number_density_cc = density_g_cc / total_mass_g
     
@@ -95,3 +110,24 @@ def calculate_compound(formula, density_g_cc, energy_keV=None):
             delta = d
     
     return beta, delta, energy_keV
+
+
+def calculate_icru44(name, density_g_cc, energy_keV=None):
+
+    df = loadcsv.load_icru44(name)
+
+    if energy_keV is not None:
+        energy_keV = np.asarray(energy_keV)
+        mu = np.interp(energy_keV*1e-3, df.energy_MeV.values, df.mu_rho_cm2_g.values * density_g_cc)
+    else:
+        energy_keV = df.energy_MeV.values * 1000.0
+        mu = df.mu_rho_cm2_g.values * density_g_cc
+
+    lambda_cm = energy_to_wavelength_m(energy_keV*1000.0) * 100
+    beta = mu * lambda_cm / 2.0 / np.pi / 2.0
+
+    return beta, energy_keV
+
+
+
+

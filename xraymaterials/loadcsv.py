@@ -1,10 +1,12 @@
 import os
 import pandas
 import glob
+import json
 
 pwd = os.path.dirname(os.path.abspath(__file__))
 icru44_dir = os.path.join(pwd, "icru44")
 elements_dir = os.path.join(pwd, "elements")
+mixtures_dir = os.path.join(pwd, "mixtures")
 
 def _list_files(dir):
     files = glob.glob(os.path.join(dir, "*.txt"))
@@ -32,3 +34,11 @@ def load_element(element_name):
 
 def load_icru44(material_name):
     return _load_file(icru44_dir, material_name)
+
+def load_mixture(material_name):
+    with open(os.path.join(pwd, "mixtures", "material_composition.txt")) as fh:
+        s = json.load(fh)
+        kvs = [(entry["material"], entry) for entry in s]
+        s_dict = dict(kvs)
+    entry = s_dict[material_name]
+    return entry
