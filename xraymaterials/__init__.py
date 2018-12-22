@@ -1,2 +1,2 @@
-from .refractiveindex import calculate_element, calculate_compound, calculate_icru44
+from .refractiveindex import calculate_stoichiometry, calculate_mu, calculate_n, calculate_n_mu
 from . import elements

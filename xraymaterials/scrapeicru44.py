@@ -23,6 +23,36 @@ def scrape_icru44_tables(main_url=None):
     
     return icru44_tables
 
+def scrape_icru44_composition():
+    """
+    Download ICRU-44 material composition table from the NIST website and
+    return it in a list of dicts.
+    """
+    tab2_url = "https://physics.nist.gov/PhysRefData/XrayMassCoef/tab2.html"
+
+    page = requests.get(tab2_url)
+    soup = BeautifulSoup(page.content, "html.parser")
+    rows = soup("tr")[3:]
+
+    composition_pattern = re.compile(r"(.*):(.*)")
+    density_pattern = re.compile(".*E.[0-9]{2}")
+
+    material_data = []
+
+    for row in rows:
+        material = row("td")[0]
+
+        density_g_cc = row.find("td", text=density_pattern)
+        composition = row.find_all("td")[-1]
+        z_fractions = composition_pattern.findall(composition.text)
+
+        zs = [int(token[0].strip()) for token in z_fractions]
+        fractions = [float(token[1].strip()) for token in z_fractions]
+
+        material_data.append( {"material":material.text, "density_g_cc": float(density_g_cc.text), "z":zs, "fraction":fractions} )
+
+    return material_data
+
 _main_url = "https://physics.nist.gov/PhysRefData/XrayMassCoef/tab4.html"
 
 def _get_icru44_links(main_url):
@@ -47,3 +77,4 @@ def _scrape_icru44_page(url):
     
     df = pandas.read_table(io.StringIO(cleaned_table_txt), names=["energy_MeV", "mu_rho_cm2_g", "muen_rho_cm2_g"], delimiter="\s+")
     return df
+
