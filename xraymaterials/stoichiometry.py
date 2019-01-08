@@ -2,12 +2,22 @@ import re
 import numpy as np
 import scipy.constants
 from . import elements
-from . import loadcsv
+from . import loaddata
 
 
+# TODO: consider whether this function is necessary and/or should be renamed
+def compound_number_densities(formula, total_density_g_cc):
+    """
+    Calculate the number densities of elements in a compound
 
-# todo: rename me
-def molecule_number_densities(formula, total_density_g_cc):
+    Parameters:
+        formula: chemical formula, capitalization-sensitive, e.g. "H2O"
+        total_density_g_cc: mass density of the compound, e.g. 0.997
+
+    Returns:
+        elements: list of element symbols, e.g. ["H", "O"]
+        number_density_cc: list of number densities in units of 1/cc
+    """
     elements, numbers, atomic_masses = calculate_stoichiometry(formula)
     element_mass_g = np.multiply(numbers, atomic_masses) * scipy.constants.atomic_mass / scipy.constants.gram
     mol_mass_g = element_mass_g.sum()
@@ -58,7 +68,20 @@ def calculate_stoichiometry(formula):
 
 
 def number_density(symbols, density_g_cc):
-    
+    """
+    Convert mass density to number density for a list of elements.
+
+    Parameters:
+        symbols: array-like
+            Atomic symbols or atomic numbers, e.g.
+                ['He', 'Li', 'U'] or [2, 3, 92]
+        density_g_cc: array-like
+            Mass densities of given elements in units of g/cc
+
+    Returns:
+        number_density_cc: array-like
+            Number densities of given elements in units of 1/cc 
+    """
     density_g_cc = np.asarray(density_g_cc)
     number_density_cc = np.empty_like(density_g_cc)
     
@@ -74,8 +97,21 @@ def number_density(symbols, density_g_cc):
     return number_density_cc
         
 
-def density(symbols, number_density_cc):
-    
+def mass_density(symbols, number_density_cc):
+    """
+    Convert number density to mass density for a list of elements.
+
+    Parameters:
+        symbols: array-like
+            Atomic symbols or atomic numbers, e.g.
+                ['He', 'Li', 'U'] or [2, 3, 92]
+        number_density_cc: array-like
+            Number densities of given elements in units of 1/cc 
+
+    Returns:
+        density_g_cc: array-like
+            Mass densities of given elements in units of g/cc
+    """
     number_density_cc = np.asarray(number_density_cc)
     density_g_cc = np.empty_like(number_density_cc)
     
@@ -94,7 +130,7 @@ def density(symbols, number_density_cc):
 def _test_density():
     rho_in = [1.0, 2.0]
     n = number_density(["H", "O"], rho_in)
-    rho_out = density([1, 8], n)
+    rho_out = mass_density([1, 8], n)
     np.testing.assert_array_almost_equal(rho_in, rho_out)
 
 
