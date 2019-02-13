@@ -40,9 +40,9 @@ def _rows_to_dataframe(table_rows, column_names):
     if column_names is None:
         num_columns = len(table_rows[0].split())
         if num_columns == 4:
-            column_names = ["energy_keV", "f2_e_atom", "mu_rho_cm2_g", "mu_rho_tot_cm2_g"]
+            column_names = ["energy_keV", "f2_e_atom", "mu_rho_pe_cm2_g", "mu_rho_tot_cm2_g"]
         elif num_columns == 8:
-            column_names = ["energy_keV", "f1_e_atom", "f2_e_atom", "mu_rho_cm2_g", "sigma_rho_cm2_g", "mu_rho_tot_cm2_g", "mu_rho_K_cm2_g", "lambda_nm"]
+            column_names = ["energy_keV", "f1_e_atom", "f2_e_atom", "mu_rho_pe_cm2_g", "sigma_rho_cm2_g", "mu_rho_tot_cm2_g", "mu_rho_K_cm2_g", "lambda_nm"]
         else:
             raise Exception(f"Got {num_columns} columns, expected 4 or 6")
 

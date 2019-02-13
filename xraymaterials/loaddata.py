@@ -45,6 +45,17 @@ def load_element(element_name):
 
     xraymaterials knows f1, f2 and several absorption coefficients for a range
     of energies from about 2 keV to 430 keV.
+
+    Columns:
+        energy_keV:         photon energy
+        f1_e_atom:          real part of atomic form factor in eu
+        f2_e_atom:          imaginary part of atomic form factor in eu
+        mu_rho_pe_cm2_g:    mass photoelectric attenuation coefficient
+        sigma_rho_cm2_g:    estimate of coherent and incoherent scattering cross-section sum
+        mu_rho_tot_cm2_g:   mass attenuation coefficient
+        mu_rho_K_cm2_g:     component of mass PE attenuation coefficient relating to the
+                            isolated K-shell orbital
+        lambda_nm:          photon wavelength
     """
     return _load_csv_file(elements_dir, element_name)
 
@@ -55,6 +66,11 @@ def load_icru44_absorption(material_name):
     xraymaterials knows the absorption coefficient for ICRU-44 materials for a
     range of energies from about 1 keV to 20 meV.  The fractional composition by
     mass of ICRU-44 materials is available from load_icru44_composition.
+
+    Columns:
+        energy_MeV:         photon energy
+        mu_rho_cm2_g:       mass attenuation coefficient
+        muen_rho_cm2_g:     mass energy-absorption coefficient
     """
     return _load_csv_file(icru44_dir, material_name)
 

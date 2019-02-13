@@ -1,4 +1,4 @@
-energy_keV,f1_e_atom,f2_e_atom,mu_rho_cm2_g,sigma_rho_cm2_g,mu_rho_tot_cm2_g,mu_rho_K_cm2_g,lambda_nm
+energy_keV,f1_e_atom,f2_e_atom,mu_rho_pe_cm2_g,sigma_rho_cm2_g,mu_rho_tot_cm2_g,mu_rho_K_cm2_g,lambda_nm
 2.0807330000000004,11.2505,1.5228,1339.6,1.7269,1341.3,1262.0,0.5959
 2.224304,11.3511,1.3668,1124.8,1.6851,1126.5,1060.0,0.5574
 2.377781,11.3777,1.2171,936.91,1.64,938.55,883.3,0.5214
