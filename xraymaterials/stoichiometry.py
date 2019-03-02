@@ -82,6 +82,9 @@ def number_density(symbols, density_g_cc):
         number_density_cc: array-like
             Number densities of given elements in units of 1/cc 
     """
+    if len(symbols) != len(density_g_cc):
+        raise Exception("Number of symbols does not match number of densities")
+
     density_g_cc = np.asarray(density_g_cc)
     number_density_cc = np.empty_like(density_g_cc)
     
@@ -112,6 +115,9 @@ def mass_density(symbols, number_density_cc):
         density_g_cc: array-like
             Mass densities of given elements in units of g/cc
     """
+    if len(symbols) != len(number_density_cc):
+        raise Exception("Number of symbols does not match number of densities")
+
     number_density_cc = np.asarray(number_density_cc)
     density_g_cc = np.empty_like(number_density_cc)
     
@@ -120,7 +126,6 @@ def mass_density(symbols, number_density_cc):
             elem_name = elements.ELEMENTS[elem_name].symbol
         
         elem_mass_g = elements.ELEMENTS[elem_name].mass * scipy.constants.atomic_mass / scipy.constants.gram
-        
         elem_density_g_cc = elem_n_cc * elem_mass_g
         density_g_cc[ii] = elem_density_g_cc
     
