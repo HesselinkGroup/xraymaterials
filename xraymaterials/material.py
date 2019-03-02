@@ -104,19 +104,37 @@ class Material:
     
     def __add__(self, rhs):
         """
-        Add materials by number density.
+        Add materials by mass density.
         """
         
-        my_n_cc = stoichiometry.number_density(self.z, self.g_cc)
-        rhs_n_cc = stoichiometry.number_density(rhs.z, rhs.g_cc)
+        # my_n_cc = stoichiometry.number_density(self.z, self.g_cc)
+        # rhs_n_cc = stoichiometry.number_density(rhs.z, rhs.g_cc)
 
-        sum_n_cc = Material._to_array(self.z, my_n_cc) + Material._to_array(rhs.z, rhs_n_cc)
-        sum_z = np.where(sum_n_cc)[0] + 1
-        sum_n_cc = sum_n_cc[sum_z-1]
+        # sum_n_cc = Material._to_array(self.z, my_n_cc) + Material._to_array(rhs.z, rhs_n_cc)
+        # sum_z = np.where(sum_n_cc)[0] + 1
+        # sum_n_cc = sum_n_cc[sum_z-1]
 
-        sum_g_cc = stoichiometry.mass_density(sum_z, sum_n_cc)
-        
-        return Material(sum_z, sum_g_cc)
+        # sum_g_cc = stoichiometry.mass_density(sum_z, sum_n_cc)
+
+        # return Material(sum_z, sum_g_cc)
+
+        x = self.to_array()
+        y = rhs.to_array()
+        z = x+y
+
+        return Material.from_array(z)
+
+    def __getitem__(self, key):
+        if isinstance(key, str) or isinstance(key, int):
+            return self[ [key] ]
+
+        indices = [elements.ELEMENTS[k].number-1 for k in key]
+
+        x = self.to_array()
+        y = np.zeros_like(x)
+        y[indices] = x[indices]
+
+        return Material.from_array(y)
         
     def to_dict(self):
         """
@@ -160,6 +178,14 @@ class Material:
         new_material = Material(self.z, self.g_cc)
         new_material.density = new_density_g_cc
         return new_material
+
+    def number_densities(self):
+        """
+        Return array of element number densities
+        """
+
+        n_cc = stoichiometry.number_density(self.z, self.g_cc)
+        return Material._to_array(self.z, n_cc)
     
     @classmethod
     def from_element(cls, symbol, density_g_cc=None):
@@ -270,7 +296,7 @@ class Material:
     @staticmethod
     def sum_by_volume(materials, volumes, final_density_g_cc=None):
         """
-        Sum multiple materials with given parts-per-volume.  Assumes conservation of volume.
+        Sum multiple materials with given parts-per-volume.  Volume is conserved.
         
         materials:          list of Materials
         volumes:            list of parts-by-volume
@@ -292,7 +318,7 @@ class Material:
     @staticmethod
     def sum_by_mass(materials, masses, final_density_g_cc=None):
         """
-        Sum multiple materials with given parts-per-mass.
+        Sum multiple materials with given parts-per-mass.  Volume is conserved.
         
         materials:          list of Materials
         masses:             list of parts-by-mass
@@ -300,6 +326,7 @@ class Material:
         
         Returns: Material representing mixture of materials
         """
+        
         volumes = np.divide(masses, [m.density for m in materials])
         return Material.sum_by_volume(materials, volumes, final_density_g_cc)
         
