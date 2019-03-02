@@ -197,7 +197,7 @@ def calculate_n_mu(z, elem_g_cc=None, elem_n_cc=None, energy_keV=None):
         elem_n_cc = stoichiometry.number_density(z, elem_g_cc)
     
     mu, energy_keV = calculate_mu(z, elem_g_cc, energy_keV)
-    delta, beta, _ = calculate_n(z, elem_n_cc, energy_keV)
+    delta, beta, _ = calculate_n(z, elem_n_cc=elem_n_cc, energy_keV=energy_keV)
     
     return delta, beta, mu, energy_keV
 
