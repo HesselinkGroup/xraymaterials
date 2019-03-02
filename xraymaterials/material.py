@@ -178,6 +178,14 @@ class Material:
         new_material = Material(self.z, self.g_cc)
         new_material.density = new_density_g_cc
         return new_material
+
+    def number_densities(self):
+        """
+        Return array of element number densities
+        """
+
+        n_cc = stoichiometry.number_density(self.z, self.g_cc)
+        return Material._to_array(self.z, n_cc)
     
     @classmethod
     def from_element(cls, symbol, density_g_cc=None):
@@ -288,7 +296,7 @@ class Material:
     @staticmethod
     def sum_by_volume(materials, volumes, final_density_g_cc=None):
         """
-        Sum multiple materials with given parts-per-volume.  Assumes conservation of volume.
+        Sum multiple materials with given parts-per-volume.  Volume is conserved.
         
         materials:          list of Materials
         volumes:            list of parts-by-volume
@@ -310,7 +318,7 @@ class Material:
     @staticmethod
     def sum_by_mass(materials, masses, final_density_g_cc=None):
         """
-        Sum multiple materials with given parts-per-mass.
+        Sum multiple materials with given parts-per-mass.  Volume is conserved.
         
         materials:          list of Materials
         masses:             list of parts-by-mass
@@ -318,6 +326,7 @@ class Material:
         
         Returns: Material representing mixture of materials
         """
+        
         volumes = np.divide(masses, [m.density for m in materials])
         return Material.sum_by_volume(materials, volumes, final_density_g_cc)
         
