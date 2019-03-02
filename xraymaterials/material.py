@@ -217,91 +217,94 @@ class Material:
     def __str__(self):
         return repr(self)
     
+    @staticmethod
+    def add_by_volume(mat1, vol1, mat2, vol2, final_density_g_cc=None):
+        """
+        Add two materials with given parts-per-volume.  Assumes conservation of volume.
 
-def add_by_volume(mat1, vol1, mat2, vol2, final_density_g_cc=None):
-    """
-    Add two materials with given parts-per-volume.  Assumes conservation of volume.
+        The final mixture's element densities are the volume-weighted average of the
+        input mixtures' element densities.
+        
+        If final_density is given, the density of the resulting mixture will be
+        coerced to this value.
+        
+        mat1:               first Material
+        vol1:               part-by-volume of first material
+        mat2:               second Material
+        vol2:               part-by-volume of second material
+        final_density_g_cc: (optional) density of resulting material [g/cc]
+        
+        Returns: Material representing mixture of two materials.
+        
+        Example: unseasoned biscuit mix.  Add 2 cups of flour to 1 tablespoon of
+        baking powder (1 tablespoon = 1/16 cup).  We expect to get 2.0625 cups
+        of unflavorful biscuit mix, i.e. volume is conserved, so we use add_by_volume().
+        
+        mixture = add_by_volume(flour, 2.0, baking_powder, 1./16)
+        
+        mixture.density is the elemental density of the resulting biscuit mix.
+        """
+        
+        return Material.sum_by_volume([mat1, mat2], [vol1, vol2], final_density_g_cc)
+        
 
-    The final mixture's element densities are the volume-weighted average of the
-    input mixtures' element densities.
-    
-    If final_density is given, the density of the resulting mixture will be
-    coerced to this value.
-    
-    mat1:               first Material
-    vol1:               part-by-volume of first material
-    mat2:               second Material
-    vol2:               part-by-volume of second material
-    final_density_g_cc: (optional) density of resulting material [g/cc]
-    
-    Returns: Material representing mixture of two materials.
-    
-    Example: unseasoned biscuit mix.  Add 2 cups of flour to 1 tablespoon of
-    baking powder (1 tablespoon = 1/16 cup).  We expect to get 2.0625 cups
-    of unflavorful biscuit mix, i.e. volume is conserved, so we use add_by_volume().
-    
-    mixture = add_by_volume(flour, 2.0, baking_powder, 1./16)
-    
-    mixture.density is the elemental density of the resulting biscuit mix.
-    """
-    
-    return sum_by_volume([mat1, mat2], [vol1, vol2], final_density_g_cc)
-    
-    
-def add_by_mass(mat1, m1, mat2, m2, final_density_g_cc=None):
-    """
-    Add two materials with given parts-per-mass.  Assumes conservation of volume.
-    
-    If final_density is given, the density of the resulting mixture will be
-    coerced to this value.
-    
-    mat1:               first Material
-    m1:                 part-by-mass of first material
-    mat2:               second Material
-    m2:                 part-by-mass of second material
-    final_density_g_cc: (optional) density of resulting material [g/cc]
-    
-    Returns: Material representing mixture of two materials.
-    """
-    
-    return sum_by_mass([mat1, mat2], [m1, m2], final_density_g_cc)
+    @staticmethod
+    def add_by_mass(mat1, m1, mat2, m2, final_density_g_cc=None):
+        """
+        Add two materials with given parts-per-mass.  Assumes conservation of volume.
+        
+        If final_density is given, the density of the resulting mixture will be
+        coerced to this value.
+        
+        mat1:               first Material
+        m1:                 part-by-mass of first material
+        mat2:               second Material
+        m2:                 part-by-mass of second material
+        final_density_g_cc: (optional) density of resulting material [g/cc]
+        
+        Returns: Material representing mixture of two materials.
+        """
+        
+        return Material.sum_by_mass([mat1, mat2], [m1, m2], final_density_g_cc)
 
-def sum_by_volume(materials, volumes, final_density_g_cc=None):
-    """
-    Sum multiple materials with given parts-per-volume.  Assumes conservation of volume.
-    
-    materials:          list of Materials
-    volumes:            list of parts-by-volume
-    final_density_g_cc: (optional) density of resulting material [g/cc]
-    
-    Returns: Material representing mixture of materials
-    """
-    masses = [m.to_array() * v for (m,v) in zip(materials, volumes)]
-    mass_total = np.sum(masses, 0)
-    v_total = np.sum(volumes)
-    
-    new_material = Material.from_array(mass_total / v_total)
-    
-    if final_density_g_cc is not None:
-        new_material.density = final_density_g_cc
-    
-    return new_material
+    @staticmethod
+    def sum_by_volume(materials, volumes, final_density_g_cc=None):
+        """
+        Sum multiple materials with given parts-per-volume.  Assumes conservation of volume.
+        
+        materials:          list of Materials
+        volumes:            list of parts-by-volume
+        final_density_g_cc: (optional) density of resulting material [g/cc]
+        
+        Returns: Material representing mixture of materials
+        """
+        masses = [m.to_array() * v for (m,v) in zip(materials, volumes)]
+        mass_total = np.sum(masses, 0)
+        v_total = np.sum(volumes)
+        
+        new_material = Material.from_array(mass_total / v_total)
+        
+        if final_density_g_cc is not None:
+            new_material.density = final_density_g_cc
+        
+        return new_material
 
-def sum_by_mass(materials, masses, final_density_g_cc=None):
-    """
-    Sum multiple materials with given parts-per-mass.
-    
-    materials:          list of Materials
-    masses:             list of parts-by-mass
-    final_density_g_cc: (optional) density of resulting material [g/cc]
-    
-    Returns: Material representing mixture of materials
-    """
-    volumes = np.divide(masses, [m.density for m in materials])
-    return sum_by_volume(materials, volumes, final_density_g_cc)
-    
-# water = Material.from_compound("H2O", 1.0)
-# iron = Material.from_element("Fe")
+    @staticmethod
+    def sum_by_mass(materials, masses, final_density_g_cc=None):
+        """
+        Sum multiple materials with given parts-per-mass.
+        
+        materials:          list of Materials
+        masses:             list of parts-by-mass
+        final_density_g_cc: (optional) density of resulting material [g/cc]
+        
+        Returns: Material representing mixture of materials
+        """
+        volumes = np.divide(masses, [m.density for m in materials])
+        return Material.sum_by_volume(materials, volumes, final_density_g_cc)
+        
+    # water = Material.from_compound("H2O", 1.0)
+    # iron = Material.from_element("Fe")
 
-# msum = add_by_mass(water, 1, iron, 1)
+    # msum = add_by_mass(water, 1, iron, 1)
 
