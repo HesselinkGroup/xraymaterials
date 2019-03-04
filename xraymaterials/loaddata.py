@@ -8,11 +8,11 @@ icru44_dir = os.path.join(pwd, "icru44")
 elements_dir = os.path.join(pwd, "elements")
 mixtures_dir = os.path.join(pwd, "mixtures")
 
-def _list_files(dir):
+def list_files(dir):
     files = glob.glob(os.path.join(dir, "*.txt"))
     return [os.path.splitext(os.path.basename(file))[0] for file in files]
 
-def _load_csv_file(dir, file_name):
+def load_csv_file(dir, file_name):
     ext = os.path.splitext(file_name)
     if len(ext[1]) == 0:
         fname = file_name + ".txt"
@@ -21,15 +21,6 @@ def _load_csv_file(dir, file_name):
     
     df = pandas.read_csv(os.path.join(dir, fname))
     return df
-
-
-def list_icru44():
-    """
-    Return a list of known ICRU-44 material names.
-
-    Valid ICRU-44 names can be input to load_icru44.
-    """
-    return _list_files(icru44_dir)
 
 def list_elements():
     """
@@ -57,9 +48,9 @@ def load_element(element_name):
                             isolated K-shell orbital
         lambda_nm:          photon wavelength
     """
-    return _load_csv_file(elements_dir, element_name)
+    return load_csv_file(elements_dir, element_name)
 
-def load_icru44_absorption(material_name):
+def load_absorption(material_name):
     """
     Return ICRU-44 material xray properties in Pandas dataframe.
 
@@ -72,9 +63,9 @@ def load_icru44_absorption(material_name):
         mu_rho_cm2_g:       mass attenuation coefficient
         muen_rho_cm2_g:     mass energy-absorption coefficient
     """
-    return _load_csv_file(icru44_dir, material_name)
+    return load_csv_file(icru44_dir, material_name)
 
-def load_icru44_composition(material_name):
+def load_composition(material_name):
     """
     Return ICRU-44 material fractional composition by mass.
 

@@ -2,6 +2,7 @@ import numpy as np
 from . import elements
 from .refractiveindex import calculate_n, calculate_mu, calculate_mass_coefficient
 from . import stoichiometry
+from . import icru44
 
 class Material:
     """
@@ -212,6 +213,17 @@ class Material:
         symbols, elem_n_cc = stoichiometry.compound_number_densities(formula, density_g_cc)
         elem_g_cc = stoichiometry.mass_density(symbols, elem_n_cc)
         return cls(symbols, elem_g_cc)
+
+    @classmethod
+    def from_icru44(cls, icru44_name):
+        """
+        Create Material from an ICRU-44 material.
+
+        icru44_name:  valid ICRU-44 material name e.g. "Water, Liquid"
+
+        For full list of valid ICRU-44 material names, call xraymaterials.icru44.list().
+        """
+        return icru44.load(icru44_name)
 
     @classmethod
     def from_array(cls, density_g_cc):
