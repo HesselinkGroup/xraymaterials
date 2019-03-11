@@ -203,13 +203,15 @@ class Material:
         return cls([symbol], [density_g_cc])
     
     @classmethod
-    def from_compound(cls, formula, density_g_cc):
+    def from_compound(cls, formula, density_g_cc=None):
         """
         Create Material from a chemical formula.
         
         formula:       chemical formula e.g. "H2O"
-        density_g_cc:  total density of compound
+        density_g_cc:  (optional) total density of compound.  Default is 1.0.
         """
+        if density_g_cc is None:
+            density_g_cc = 1.0
         symbols, elem_n_cc = stoichiometry.compound_number_densities(formula, density_g_cc)
         elem_g_cc = stoichiometry.mass_density(symbols, elem_n_cc)
         return cls(symbols, elem_g_cc)
