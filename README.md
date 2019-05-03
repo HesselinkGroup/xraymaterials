@@ -1,5 +1,7 @@
-# xraymaterials
-xray material database
+# xraymaterials 0.5
 
+Tools for calculating optical properties of materials in the xray energy regime.
 
-Scripts to calculate delta and beta for various elements and compounds.
+## Author
+
+Paul Hansen
