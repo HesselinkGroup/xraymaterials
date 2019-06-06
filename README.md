@@ -8,7 +8,7 @@ Paul Hansen
 
 # Version history
 
-## 0.6
+## 0.6.0
 
 Began version history.
 Improvements to packaging.  Can install with pip -r requirements.txt.

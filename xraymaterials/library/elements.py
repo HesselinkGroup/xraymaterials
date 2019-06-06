@@ -1,5 +1,6 @@
-from .material import Material as _Material
-from .elements import ELEMENTS as _ELEMENTS
+from ..material import Material as _Material
+from ..elements import ELEMENTS as _ELEMENTS
+from .compounds import *
 
 def _create_elements():
     g = globals()

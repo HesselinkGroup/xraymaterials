@@ -22,11 +22,9 @@ class Material:
         Material.from_vector()
         Material.from_dict()
         
-        Parameters:
-            symbols: array-like
-                List of symbols (e.g. "H") or atomic numbers
-            density_g_cc: array-like
-                List of corresponding densities for each element, in grams per cc.
+        Args:
+            symbols (array-like): List of symbols (e.g. "H") or atomic numbers
+            density_g_cc (array-like): List of corresponding densities for each element, in grams per cc.
         """
         self.z = []
         self.g_cc = []
