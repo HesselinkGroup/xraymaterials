@@ -35,3 +35,4 @@ from .material import Material
 from . import library
 
 
+version = "0.6.0"
