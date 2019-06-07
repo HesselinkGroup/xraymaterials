@@ -9,6 +9,10 @@ def _init():
     global _g
     g = _g
 
+
+    g["water"] = Material.from_compound("H2O", 1.0)
+    g["acetic_acid"] = Material.from_compound("C2H4O2", 1.049) # density: wikipedia
+
     # Lipids
     g["triolein"] = Material.from_compound("C57H104O6")
 

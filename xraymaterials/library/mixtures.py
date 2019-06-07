@@ -4,7 +4,7 @@ _g = dict()
 def _init():
     from ..material import Material as Material
     from .elements import carbon, oxygen, hydrogen, nitrogen, lead, tin, nickel, manganese, chromium, iron, silicon, zinc, copper, phosphorus
-    from .compounds import cellulose
+    from .compounds import cellulose, water, fructose, glucose, sucrose, maltose, gluconic_acid, water, acetic_acid
 
     global _g
     g = _g
@@ -26,6 +26,11 @@ def _init():
     # W.J.Rof,J.R.Scot,J.Paciti,HandbokofComonPolymers:Fibres,Films,PlasticsandRubers,CRC Pres,Cleveland,1971.
     # Mass density of silk/wool cloths: 200 kg/m3 = 0.2 g/cc
     # 
+
+    # From Bill:
+    #   I think .25 is pretty good.
+    #   If you think about the weight of a fully packed suitcase and divide by the volume, I think you will find it's close.
+    #   I have no source for this, but I have picked up a hell of a lot of suitcases.  (literally thousands)
 
     g["cotton_clothes_packed"] = cellulose.as_density(0.25)
 
@@ -52,6 +57,21 @@ def _init():
 
     # https://www.makeitfrom.com/material-properties/Half-Hard-201-Stainless-Steel
     g["stainless_steel"] = Material.sum_by_mass([silicon, nickel, manganese, chromium, iron], [0.5, 4.5, 6.5, 17, 71.5], final_density_g_cc=7.7)
+
+
+    # ==== Foodstuffs
+
+    # From Ball 2007, I will take the water and monosaccharide components and then
+    # just replace the other disaccharides with glucose.  Maltose for instance can
+    # be a big component of honey and has effects on its crystallization.
+
+    honey_g_cc = 0.5*(1.38 + 1.45) # wikipedia
+    g["honey"] = Material.sum_by_mass([water, fructose, glucose, sucrose, maltose, gluconic_acid],
+                        [17.2, 38.4, 30.3, 1.3, 8.7, 0.57],
+                        honey_g_cc)
+
+    # Generic vinegar: FDA regulations state minimum of 5% acidity (http://www.chem.latech.edu/~deddy/chem122m/L04U00Vinegar122.htm)
+    g["vinegar"] = Material.sum_by_mass([water, acetic_acid], [0.95, 0.05], 1.05) # density: google
 
     globals().update(g)
 
