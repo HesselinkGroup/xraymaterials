@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 requirements = ["pytest", "scipy", "numpy"]
-version = "0.6"
+version = "0.6.0"
 
 setup(
     name="xraymaterials",
