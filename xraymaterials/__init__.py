@@ -29,10 +29,9 @@ Properties of ICRU-44 composition tables:
     z:                  atomic numbers of constituent elements
 """
 
-# from .refractiveindex import calculate_mu, calculate_n, calculate_n_mu, calculate_mass_coefficient
-# from .stoichiometry import calculate_stoichiometry, compound_number_densities
-# from .loaddata import list_icru44, list_elements, load_element, load_icru44_absorption, load_icru44_composition
-
 from . import icru44
 from . import elements
 from .material import Material
+from . import library
+
+

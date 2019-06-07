@@ -1,32 +1,40 @@
 """Some materials specified by their chemical formulas.
 """
 
-from ..material import Material as Material
+_g = dict()
 
-__all__ = ["triolein",
-    "sucrose", "fructose", "glucose", "maltose", "gluconic_acid",
-    "arginine", "histidine",
-    "cellulose", "polyethylene_terephthalate"]
+def _init():
+    from ..material import Material as Material
 
-# Lipids
-triolein = Material.from_compound("C57H104O6")
+    global _g
+    g = _g
 
-# Sugars
-sucrose = Material.from_compound("C12H22O11")
-fructose = Material.from_compound("C6H12O6")
-glucose = Material.from_compound("C6H12O6")
-maltose = Material.from_compound("C12H22O11")
+    # Lipids
+    g["triolein"] = Material.from_compound("C57H104O6")
 
-gluconic_acid = Material.from_compound("C6H12O7")
+    # Sugars
+    g["sucrose"] = Material.from_compound("C12H22O11")
+    g["fructose"] = Material.from_compound("C6H12O6")
+    g["glucose"] = Material.from_compound("C6H12O6")
+    g["maltose"] = Material.from_compound("C12H22O11")
 
-# Amino acids
-arginine = Material.from_compound("C6H14N4O2")
-histidine = Material.from_compound("C6H9N3O2")
+    g["gluconic_acid"] = Material.from_compound("C6H12O7")
 
-# Polysaccharides
-cellulose = Material.from_compound("C6H10O5", 1.5) # density: Wikipedia
+    # Amino acids
+    g["arginine"] = Material.from_compound("C6H14N4O2")
+    g["histidine"] = Material.from_compound("C6H9N3O2")
 
-# Polymers
-polyethylene_terephthalate = Material.from_compound("C10H8O4", 1.38) # density: Wikipedia
+    # Polysaccharides
+    g["cellulose"] = Material.from_compound("C6H10O5", 1.5) # density: Wikipedia
 
+    # Polymers
+    g["polyethylene_terephthalate"] = Material.from_compound("C10H8O4", 1.38) # density: Wikipedia
+
+    globals().update(g)
+
+
+def list():
+    return [k for k in _g.keys()]
+
+_init()
 

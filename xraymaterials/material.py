@@ -341,9 +341,16 @@ class Material:
         
         volumes = np.divide(masses, [m.density for m in materials])
         return Material.sum_by_volume(materials, volumes, final_density_g_cc)
-        
-    # water = Material.from_compound("H2O", 1.0)
-    # iron = Material.from_element("Fe")
+    
+    # An idea.
+    # def _repr_markdown_(self):
+    #     # total_density = np.sum(self.g_cc)
 
-    # msum = add_by_mass(water, 1, iron, 1)
+    #     keys = [elements.ELEMENTS[z].symbol for z in self.z]
+    #     d = dict(zip(keys, self.g_cc))
 
+    #     s = "$"
+    #     for z, g_cc in zip(self.z, self.g_cc):
+    #         s += elements.ELEMENTS[z].symbol + f"_{{{g_cc:0.3f}}}"
+    #     s += "$"
+    #     return s

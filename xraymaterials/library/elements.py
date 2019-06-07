@@ -9,3 +9,5 @@ def _create_elements():
 
 _create_elements()
 
+def list():
+    return [elem.name.lower() for elem in _ELEMENTS]

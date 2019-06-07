@@ -8,6 +8,13 @@ Paul Hansen
 
 # Version history
 
+## 0.6.1
+
+Started on the expanded materials library, `xraymaterials.library`.  Compounds, elements and mixtures.
+Moved example notebook to new `notebooks/` directory.
+.gitignore and .bumpconfig.cfg added
+New material library example notebook
+
 ## 0.6.0
 
 Began version history.
