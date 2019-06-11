@@ -8,6 +8,10 @@ Paul Hansen
 
 # Version history
 
+## 0.6.3
+
+- Added polyoxymethylene and Delrin (same thing)
+
 ## 0.6.2
 
 - Added water, vinegar and honey to library
