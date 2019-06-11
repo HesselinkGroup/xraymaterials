@@ -73,6 +73,13 @@ def _init():
     # Generic vinegar: FDA regulations state minimum of 5% acidity (http://www.chem.latech.edu/~deddy/chem122m/L04U00Vinegar122.htm)
     g["vinegar"] = Material.sum_by_mass([water, acetic_acid], [0.95, 0.05], 1.05) # density: google
 
+    # https://www.simplyrecipes.com/a_guide_to_balsamic_vinegar/
+    # To qualify for official recognition, Balsamic Vinegar of Modena can only be made with the following ingredients:
+    # - Boiled or concentrated grape must (at least 20% by volume) 
+    # - Wine vinegar (at least 10%)
+    # - Natural caramel (made by cooking sugar) for color (up to 2%)
+    # - Aged balsamic vinegar (aged at least 10 years), an unspecified amount, usually negligible
+
     globals().update(g)
 
 

@@ -34,6 +34,9 @@ def _init():
     # Polymers
     g["polyethylene_terephthalate"] = Material.from_compound("C10H8O4", 1.38) # density: Wikipedia
 
+    g["polyoxymethylene"] = Material.from_compound("CH2O", 1.41) # density: wikipedia.  Delrin!
+    g["delrin"] = g["polyoxymethylene"]
+
     globals().update(g)
 
 
