@@ -8,6 +8,10 @@ Paul Hansen
 
 # Version history
 
+## 0.6.4
+
+- Added C4 (with RDX)
+
 ## 0.6.3
 
 - Added polyoxymethylene and Delrin (same thing)
