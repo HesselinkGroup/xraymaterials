@@ -65,7 +65,7 @@ def _init():
     # just replace the other disaccharides with glucose.  Maltose for instance can
     # be a big component of honey and has effects on its crystallization.
 
-    honey_g_cc = 0.5*(1.38 + 1.45) # wikipedia
+    honey_g_cc = 1.415 # 0.5*(1.38 + 1.45) per wikipedia
     g["honey"] = Material.sum_by_mass([water, fructose, glucose, sucrose, maltose, gluconic_acid],
                         [17.2, 38.4, 30.3, 1.3, 8.7, 0.57],
                         honey_g_cc)
@@ -79,6 +79,23 @@ def _init():
     # - Wine vinegar (at least 10%)
     # - Natural caramel (made by cooking sugar) for color (up to 2%)
     # - Aged balsamic vinegar (aged at least 10 years), an unspecified amount, usually negligible
+
+
+
+    # ==== Explosives
+
+    # C4 with RDX:
+    # 91% RDX
+    # 5.3% DOS
+    # 2.1% PIB
+    # 1.6% motor oil
+    # Nominal density 1.72658 g/cc
+    # (Wikipedia)
+
+    from .compounds import rdx, dioctyl_sebacate, polyisobutylene, cyclohexene
+    g["c4_rdx"] = Material.sum_by_mass([rdx, dioctyl_sebacate, polyisobutylene, cyclohexene], 
+                                       [91.0, 5.3, 2.1, 1.6], 1.72658)
+
 
     globals().update(g)
 

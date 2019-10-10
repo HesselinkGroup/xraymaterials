@@ -4,10 +4,11 @@ from .compounds import *
 
 def _create_elements():
     g = globals()
-    for elem in _ELEMENTS:
+    for z in range(1,93):
+        elem = _ELEMENTS[z]
         g[elem.name.lower()] = _Material.from_element(elem.symbol)
 
 _create_elements()
 
 def list():
-    return [elem.name.lower() for elem in _ELEMENTS]
+    return [_ELEMENTS[z].name.lower() for z in range(1,93)]

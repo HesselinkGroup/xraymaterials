@@ -37,6 +37,20 @@ def _init():
     g["polyoxymethylene"] = Material.from_compound("CH2O", 1.41) # density: wikipedia.  Delrin!
     g["delrin"] = g["polyoxymethylene"]
 
+
+    # Components of C4
+    g["rdx"] = Material.from_compound("C3H6N6O6", 1.858) # wikipedia
+    g["dioctyl_sebacate"] = Material.from_compound("C26H50O4", 0.9) # wikipedia
+    g["polyisobutylene"] = Material.from_compound("C4H8", 0.92) # wikipedia; density has a range
+
+    # Liang et al.
+    # Comprehensive chemical characterization of lubricating oils used in modern vehicular engines utilizing GC × GC-TOFMS
+    # Fuel 220, 2018
+    # This paper says that cyclohexene fragments are among the most common found
+    # using gas chromatography of motor oils.  I need motor oil properties
+    # for C4.
+    g["cyclohexene"] = Material.from_compound("C6H10") # Density unknown!!!!
+
     globals().update(g)
 
 
